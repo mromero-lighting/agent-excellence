@@ -1,6 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "./supabaseClient";
-import { useAppData } from "./useAppData";
 
 const CL={orange:"#F26A36",navy:"#13294B",offwhite:"#F7F7F7"};
 const ROLES={
@@ -640,30 +638,26 @@ function KnowledgePage({currentUser,arts,setArts,onSave,onDelete,onLike,onPin}){
     setShowForm(true);
   };
   const closeForm=()=>{setShowForm(false);setEditId(null);setForm(BLANK_CARD);setCustomCat("");};
-  const saveCard=async()=>{
+  const saveCard=()=>{
     if(!form.title.trim()||!form.content.trim())return;
     const finalCat=form.category==="__new__"?customCat.trim():form.category;
-    const parsed={seg:form.seg,category:finalCat,title:form.title,type:form.type,content:form.content,author_name:form.author,tags:form.tags.split(",").map(t=>t.trim()).filter(Boolean),url:form.url||"",pinned:false};
+    const parsed={seg:form.seg,category:finalCat,title:form.title,type:form.type,content:form.content,author_name:form.author,tags:form.tags.split(",").map(t=>t.trim()).filter(Boolean),url:form.url||"",pinned:false,likes:0};
     if(editId){
-      await (onSave||Promise.resolve)({...parsed,id:editId},true);
       setArts(prev=>prev.map(a=>a.id===editId?{...a,...parsed}:a));
     }else{
-      const saved=await (onSave||Promise.resolve)({...parsed,likes:0});
-      if(saved)setArts(prev=>[{...saved,tags:saved.tags||[]},...prev]);
-      else setArts(prev=>[{...parsed,id:Date.now(),likes:0},...prev]);
+      setArts(prev=>[{...parsed,id:Date.now()},...prev]);
     }
     closeForm();
   };
-  const deleteCard=async(id)=>{
+  const deleteCard=(id)=>{
     if(!window.confirm("Delete this card?"))return;
-    await (onDelete||Promise.resolve)(id);
     setArts(prev=>prev.filter(a=>a.id!==id));
   };
-  const togglePin=async(id)=>{
-    await (onPin||Promise.resolve)(id);
+  const togglePin=(id)=>{
+    setArts(prev=>prev.map(a=>a.id===id?{...a,pinned:!a.pinned}:a));
   };
-  const likeCard=async(id)=>{
-    await (onLike||Promise.resolve)(id);
+  const likeCard=(id)=>{
+    setArts(prev=>prev.map(a=>a.id===id?{...a,likes:(a.likes||0)+1}:a));
   };
 
   // Group by category within segment
@@ -2760,67 +2754,59 @@ function ForumPage({currentUser,posts,setPosts,votedMap,setVotedMap,onSavePost,o
 
   const showToast=msg=>{setToastMsg(msg);setTimeout(()=>setToastMsg(""),3500);};
 
-  const openPost=async(id)=>{
-    if(onIncrementViews)onIncrementViews(id);
-    else setPosts(prev=>prev.map(p=>p.id===id?{...p,views:(p.views||0)+1}:p));
+  const openPost=(id)=>{
+    setPosts(prev=>prev.map(p=>p.id===id?{...p,views:(p.views||0)+1}:p));
     setActivePostId(id);setView("post");setNewAnswer("");setReplyingTo(null);setReplyText("");
   };
   const goBack=()=>{setView("list");setActivePostId(null);};
 
-  const submitPost=async()=>{
+  const submitPost=()=>{
     if(!form.title.trim()||!form.body.trim())return;
     const tags=form.tags.split(",").map(t=>t.trim()).filter(Boolean);
-    const p={seg:form.seg,title:form.title,body:form.body,
+    const p={id:Date.now(),seg:form.seg,title:form.title,body:form.body,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      tags,pinned:false,views:0,best_answer_id:null};
-    if(onSavePost){await onSavePost(p);}
-    else{setPosts(prev=>[{...p,id:Date.now(),replies:[],created_at:new Date().toISOString()},...prev]);}
+      tags,pinned:false,views:0,best_answer_id:null,
+      created_at:new Date().toISOString(),replies:[]};
+    setPosts(prev=>[p,...prev]);
     setForm({title:"",body:"",seg:"general",tags:""});setShowForm(false);
     showToast("✓ Question posted!");
   };
 
-  const submitAnswer=async()=>{
+  const submitAnswer=()=>{
     if(!newAnswer.trim())return;
-    const r={post_id:activePostId,parent_reply_id:null,
+    const r={id:Date.now(),post_id:activePostId,parent_reply_id:null,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      body:newAnswer.trim(),votes:0};
-    if(onSaveReply){await onSaveReply(r);}
-    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,{...r,id:Date.now(),created_at:new Date().toISOString()}]}:p));}
+      body:newAnswer.trim(),votes:0,created_at:new Date().toISOString()};
+    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,r]}:p));
     setNewAnswer("");showToast("✓ Answer posted!");
   };
 
-  const submitReply=async(parentId)=>{
+  const submitReply=(parentId)=>{
     if(!replyText.trim())return;
-    const r={post_id:activePostId,parent_reply_id:parentId,
+    const r={id:Date.now(),post_id:activePostId,parent_reply_id:parentId,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      body:replyText.trim(),votes:0};
-    if(onSaveReply){await onSaveReply(r);}
-    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,{...r,id:Date.now(),created_at:new Date().toISOString()}]}:p));}
+      body:replyText.trim(),votes:0,created_at:new Date().toISOString()};
+    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,r]}:p));
     setReplyText("");setReplyingTo(null);showToast("✓ Reply posted!");
   };
 
-  const castVote=async(replyId)=>{
-    if(onToggleVote){await onToggleVote(replyId,activePostId);}
-    else{
-      const already=votedMap[replyId];
-      setVotedMap(prev=>({...prev,[replyId]:!already}));
-      setPosts(prev=>prev.map(p=>({...p,replies:p.replies.map(r=>r.id===replyId?{...r,votes:r.votes+(already?-1:1)}:r)})));
-    }
+  const castVote=(replyId)=>{
+    const already=votedMap[replyId];
+    setVotedMap(prev=>({...prev,[replyId]:!already}));
+    setPosts(prev=>prev.map(p=>({...p,replies:p.replies.map(r=>r.id===replyId?{...r,votes:r.votes+(already?-1:1)}:r)})));
   };
 
-  const markBest=async(replyId)=>{
-    if(onMarkBest){await onMarkBest(activePostId,replyId);}
-    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,best_answer_id:p.best_answer_id===replyId?null:replyId}:p));}
+  const markBest=(replyId)=>{
+    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,best_answer_id:p.best_answer_id===replyId?null:replyId}:p));
   };
 
   const voteSameQuestion=(postId)=>{
     if(!uid)return;
-    if(onVoteSameQuestion){onVoteSameQuestion(postId);}
-    else{setPosts(prev=>prev.map(p=>{
+    setPosts(prev=>prev.map(p=>{
       if(p.id!==postId)return p;
       const users=p.sameQuestionUsers||[];const already=users.includes(uid);
       return{...p,sameQuestionUsers:already?users.filter(u=>u!==uid):[...users,uid],sameQuestion:(p.sameQuestion||0)+(already?-1:1)};
-    }));}
+    }));
   };
 
   const filtered=[...posts]
@@ -3320,17 +3306,25 @@ const PAGES_WITH_AGENCY_BAR=new Set(["dashboard","sc_stock","sc_spec","sc_indust
 export default function App(){
   const [user,setUser]=useState(null);
   const [page,setPage]=useState("dashboard");
-  const {
-    scores, setScores, scoresLoaded,
-    locks, setLocks,
-    snapshots, setSnapshots, evalHistory, setEvalHistory, onLock: onLockFromHook,
-    annualActions, setAnnualActions,
-    knowledgeCards, setKnowledgeCards, knowledgeLoaded,
-    saveKnowledgeCard, deleteKnowledgeCard, likeKnowledgeCard, pinKnowledgeCard,
-    forumPosts, setForumPosts, forumLoaded, votedMap, setVotedMap,
-    saveForumPost, saveForumReply, toggleForumVote, markBestAnswer,
-    incrementPostViews, voteSameQuestion: voteSameQuestionDb,
-  } = useAppData({ user, seedScores: seedScores(), ANNUAL_ACTIONS, KB_SEED, FORUM_SEED });
+  const [scores,setScores]=useState(seedScores);
+  const [locks,setLocks]=useState({});
+  const [snapshots,setSnapshots]=useState({});
+  const [evalHistory,setEvalHistory]=useState([]);
+  const [annualActions,setAnnualActions]=useState(ANNUAL_ACTIONS);
+  const [knowledgeCards,setKnowledgeCards]=useState(KB_SEED);
+  const [forumPosts,setForumPosts]=useState(FORUM_SEED.map(p=>({...p,replies:p.replies||[]})));
+  const [votedMap,setVotedMap]=useState({});
+  const onLockFromHook=null;
+  const saveKnowledgeCard=null;
+  const deleteKnowledgeCard=null;
+  const likeKnowledgeCard=null;
+  const pinKnowledgeCard=null;
+  const saveForumPost=null;
+  const saveForumReply=null;
+  const toggleForumVote=null;
+  const markBestAnswer=null;
+  const incrementPostViews=null;
+  const voteSameQuestionDb=null;
   const [openGroups,setOpenGroups]=useState({scorecard:true,actions_grp:false,training:false});
   const [selAgency,setSelAgency]=useState(AGENCIES[0]);
   const [profileAgency,setProfileAgency]=useState(null); // null = not viewing profile
@@ -3367,16 +3361,13 @@ export default function App(){
     const calcOv=(ag)=>{let t=0,mx=0;SEG.forEach(s=>{s.criteria.forEach(c=>{const v=currentScores[ag]?.[s.key+"_"+c.key]??0;if(v>0)t+=v;mx+=4;});});return mx>0?Math.round(t/mx*100):0;};
     const segScores={};SEG.forEach(s=>{segScores[s.key]=calcSeg(agency,s.key);});
     const overall=calcOv(agency);
-    // Build entry first
+    // Update snapshots and history (pure in-memory)
     setEvalHistory(prev=>{
       const prevEntry=[...prev].reverse().find(e=>e.agency===agency);
       const entry={agency,month,year,timestamp:ts,lockedBy:user?.name||"Unknown",segScores,overall,prevSegScores:prevEntry?.segScores??null,prevOverall:prevEntry?.overall??null};
       return[...prev,entry];
     });
-    // Update snapshots
     setSnapshots(prev=>({...prev,[month]:{...(prev[month]||{}),...agSnap}}));
-    // Fire Supabase persistence outside any state updater
-    if(onLockFromHook)setTimeout(()=>onLockFromHook(agency,currentScores),0);
   };
 
   const isChildActive=group=>group.children?.some(c=>c.id===page);
@@ -3398,8 +3389,8 @@ export default function App(){
     if(page==="learn_connected")  return <LearnPage segKey="connected"/>;
     if(page==="progress")         return <ProgressPage scores={scores} selAgency={effectiveAgency} snapshots={snapshots} evalHistory={evalHistory}/>;
     if(page==="actions_main")     return <ActionsPage currentUser={user} selAgency={effectiveAgency} annualActions={annualActions} setAnnualActions={setAnnualActions}/>;
-    if(page==="knowledge")        return <KnowledgePage currentUser={user} arts={knowledgeCards} setArts={setKnowledgeCards} onSave={saveKnowledgeCard} onDelete={deleteKnowledgeCard} onLike={likeKnowledgeCard} onPin={pinKnowledgeCard}/>;
-    if(page==="forum")            return <ForumPage currentUser={user} posts={forumPosts} setPosts={setForumPosts} votedMap={votedMap} setVotedMap={setVotedMap} onSavePost={saveForumPost} onSaveReply={saveForumReply} onToggleVote={toggleForumVote} onMarkBest={markBestAnswer} onIncrementViews={incrementPostViews} onVoteSameQuestion={voteSameQuestionDb}/>;
+    if(page==="knowledge")        return <KnowledgePage currentUser={user} arts={knowledgeCards} setArts={setKnowledgeCards} onSave={null} onDelete={null} onLike={null} onPin={null}/>;
+    if(page==="forum")            return <ForumPage currentUser={user} posts={forumPosts} setPosts={setForumPosts} votedMap={votedMap} setVotedMap={setVotedMap} onSavePost={null} onSaveReply={null} onToggleVote={null} onMarkBest={null} onIncrementViews={null} onVoteSameQuestion={null}/>;
     return <Dashboard scores={scores} selAgency={effectiveAgency}/>;
   };
 
