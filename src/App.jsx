@@ -929,108 +929,422 @@ function KnowledgePage({currentUser}){
 }
 
 const STEPS={
+  // ─── STOCK ───────────────────────────────────────────────────────────────
   stock:[
-    {title:"Establish Stock Foundation",desc:"Define your stock segment strategy, identify key distributors, and set up CRM targets for all key stock accounts.",tip:"The first 90 days are about inventory visibility — you can't sell what you can't see.",
+    {title:"Establish Stock Foundation",
+     desc:"Define your stock segment strategy, identify key distributors, and set up CRM targets for all key stock accounts. The foundation of stock success is knowing exactly what's on the shelf at every tier-1 location.",
+     tip:"The first 90 days are about inventory visibility — you can't sell what you can't see.",
      resources:[
-       {id:"r1",type:"doc",label:"CRM Setup Guide",url:""},
-       {id:"r2",type:"doc",label:"Distributor Tier Classification",url:""},
-       {id:"r3",type:"doc",label:"Stock Target Template",url:""},
+       {id:"rs1",type:"video",label:"Cooper Lighting — Connected Lighting Overview",url:"https://www.youtube.com/watch?v=AZ_2j2EhiFE"},
+       {id:"rs2",type:"video",label:"HALO Commercial HC Downlights Product Overview",url:"https://www.youtube.com/watch?v=bq4dNNPHS60"},
+       {id:"rs3",type:"doc",  label:"CRM Setup Guide — CLS Stock Accounts",url:"https://www.cooperlighting.com"},
+       {id:"rs4",type:"doc",  label:"Distributor Tier Classification Template",url:"https://www.cooperlighting.com"},
+       {id:"rs5",type:"link", label:"Cooper Lighting Product Catalog",url:"https://www.cooperlighting.com/global/brands"},
+     ],
+     keyPlayers:[
+       {name:"Jennifer Wills",     company:"Graybar Electric",    phone:"(713) 555-0182",email:"j.wills@graybar.com",    actionTaken:"Initial call — mapped current CLS SKU count at 3 branches",nextSteps:"Schedule joint CRM walkthrough week 3",status:"active"},
+       {name:"Doug Ferreira",      company:"Rexel USA",           phone:"(832) 555-0341",email:"d.ferreira@rexel.com",   actionTaken:"Shared distributor tier matrix, agreed on Tier 1 classification",nextSteps:"Confirm Q2 promo pre-commitment by April 25",status:"active"},
+       {name:"Sandra Okonkwo",     company:"WESCO International", phone:"(713) 555-0277",email:"s.okonkwo@wesco.com",    actionTaken:"Reviewed current inventory position — 40% below target",nextSteps:"Set weekly inside-sales call cadence starting Monday",status:"follow_up"},
      ]},
-    {title:"Walkaway Pricing Adoption",desc:"Train your team on CLS Walkaway Pricing methodology. Ensure all reps know floor pricing before any customer call.",tip:"Walk-away pricing discipline separates top-performing agencies from average ones.",
+    {title:"Walkaway Pricing Adoption",
+     desc:"Train your team on CLS Walkaway Pricing methodology. Ensure all reps know floor pricing before any customer call. Margin discipline is the single biggest differentiator between top and average stock agencies.",
+     tip:"Walk-away pricing discipline separates top-performing agencies from average ones. Print the floor card. Post it in the call room.",
      resources:[
-       {id:"r4",type:"doc",label:"Walkaway Pricing Guide",url:""},
-       {id:"r5",type:"doc",label:"Pricing Floor Reference",url:""},
-       {id:"r6",type:"doc",label:"Margin Calculator",url:""},
+       {id:"rs6",type:"video",label:"HALO Commercial PR Series — Flexibility & Value",url:"https://www.youtube.com/watch?v=K53VEpIGSpY"},
+       {id:"rs7",type:"doc",  label:"Walkaway Pricing Methodology Guide",url:"https://www.cooperlighting.com"},
+       {id:"rs8",type:"doc",  label:"CLS Pricing Floor Reference Card",url:"https://www.cooperlighting.com"},
+       {id:"rs9",type:"link", label:"Margin Calculator — CLS Tools",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Marcus Webb",        company:"Graybar Electric",    phone:"(713) 555-0182",email:"m.webb@graybar.com",     actionTaken:"Attended WP methodology training — adopted immediately",nextSteps:"Review floor card adherence at next monthly check-in",status:"complete"},
+       {name:"Alicia Thurston",    company:"Border States Electric",phone:"(504) 555-0411",email:"a.thurston@bse.com",   actionTaken:"Initial resistance — reframed as margin protection, agreed",nextSteps:"Follow up after first promo cycle results",status:"active"},
      ]},
-    {title:"Promotions & MRAM Execution",desc:"Deploy MRAM kits at top distributors. Execute Q-cycle promotions with pre-committed stocking plans.",tip:"Commit distributors 6 weeks before the promotion cycle opens.",
+    {title:"Promotions & MRAM Execution",
+     desc:"Deploy MRAM kits at top distributors. Execute Q-cycle promotions with pre-committed stocking plans. Every promo cycle is an opportunity to grow shelf space and lock in distributor loyalty.",
+     tip:"Commit distributors 6 weeks before the promotion cycle opens. The best performers pre-commit before you even ask.",
      resources:[
-       {id:"r7",type:"doc",label:"MRAM Placement Guide",url:""},
-       {id:"r8",type:"doc",label:"Q-Cycle Promo Playbook",url:""},
-       {id:"r9",type:"doc",label:"Promo Tracking Template",url:""},
+       {id:"rs10",type:"video",label:"Cooper Lighting — HALO Commercial HC Overview",url:"https://www.youtube.com/watch?v=0dRctazjJds"},
+       {id:"rs11",type:"doc",  label:"MRAM Kit Placement Best Practices",url:"https://www.cooperlighting.com"},
+       {id:"rs12",type:"doc",  label:"Q-Cycle Promo Playbook",url:"https://www.cooperlighting.com"},
+       {id:"rs13",type:"form", label:"Promo Pre-Commitment Tracker",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Tim Gallagher",      company:"Rexel USA — Houston",  phone:"(832) 555-0190",email:"t.gallagher@rexel.com",  actionTaken:"Pre-committed $85K for Q2 promo. MRAM kit placed at all 4 branches.",nextSteps:"Confirm sell-through tracking setup with inside sales",status:"complete"},
+       {name:"Lisa Nakamura",      company:"Crescent Electric",    phone:"(281) 555-0328",email:"l.nakamura@crescent.com",actionTaken:"MRAM kit placed. Q2 pre-commitment pending approval from branch manager.",nextSteps:"Escalate to branch manager — decision due Apr 20",status:"follow_up"},
      ]},
-    {title:"EDI & E-Commerce Activation",desc:"Drive EDI adoption across your distributor base. Review and optimize the online product presence for CLS products.",tip:"Every distributor on EDI means fewer order errors and faster restock cycles.",
+    {title:"EDI & E-Commerce Activation",
+     desc:"Drive EDI adoption across your distributor base. Review and optimize the online product presence for CLS products.",
+     tip:"Every distributor on EDI means fewer order errors and faster restock cycles.",
      resources:[
-       {id:"r10",type:"doc",label:"EDI Setup Guide",url:""},
-       {id:"r11",type:"doc",label:"E-Commerce Audit Template",url:""},
-       {id:"r12",type:"doc",label:"Online Presence Checklist",url:""},
+       {id:"rs14",type:"doc",  label:"EDI Setup Guide — CLS Distributor Program",url:"https://www.cooperlighting.com"},
+       {id:"rs15",type:"doc",  label:"E-Commerce Audit Template",url:"https://www.cooperlighting.com"},
+       {id:"rs16",type:"link", label:"CLS Product Data on Distributor Platforms",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Brian Schultz",      company:"Graybar Digital",      phone:"(713) 555-0444",email:"b.schultz@graybar.com",  actionTaken:"EDI connection confirmed — live on 3 branches",nextSteps:"Verify product data accuracy on graybar.com",status:"complete"},
      ]},
-    {title:"Inside Sales Integration",desc:"Assign a dedicated inside sales resource to the stock segment. Define daily and weekly routines for stock activity.",tip:"Inside sales consistency beats field visit frequency every time in the stock segment.",
+    {title:"Inside Sales Integration",
+     desc:"Assign a dedicated inside sales resource to the stock segment. Define daily and weekly routines for stock activity.",
+     tip:"Inside sales consistency beats field visit frequency every time in the stock segment.",
      resources:[
-       {id:"r13",type:"doc",label:"Inside Sales Job Description",url:""},
-       {id:"r14",type:"doc",label:"Daily Routine Template",url:""},
-       {id:"r15",type:"doc",label:"Stock Call Guide",url:""},
+       {id:"rs17",type:"video",label:"HALO Commercial HC Series — Efficiency + Value",url:"https://www.youtube.com/watch?v=0dRctazjJds"},
+       {id:"rs18",type:"doc",  label:"Inside Sales Daily Routine Template",url:"https://www.cooperlighting.com"},
+       {id:"rs19",type:"doc",  label:"Stock Call Guide — CLS",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Rachel Dominguez",   company:"Agency — Inside Sales",phone:"(281) 555-0512",email:"r.dominguez@agency.com", actionTaken:"Assigned as dedicated stock IS rep. First week cadence set.",nextSteps:"Review first week call log on Friday",status:"active"},
      ]},
-    {title:"Buying Group & Marketing Fund Mastery",desc:"Maximize buying group participation and deploy marketing development funds strategically.",tip:"Unused MDF is money left on the table. Build a 12-month MDF plan at the start of the year.",
+    {title:"Buying Group & Marketing Fund Mastery",
+     desc:"Maximize buying group participation and deploy marketing development funds strategically. Build a 12-month MDF calendar at the start of the year.",
+     tip:"Unused MDF is money left on the table. Build a 12-month MDF plan at the start of the year.",
      resources:[
-       {id:"r16",type:"doc",label:"Buying Group Overview",url:""},
-       {id:"r17",type:"doc",label:"MDF Request Process",url:""},
-       {id:"r18",type:"doc",label:"Marketing Calendar Template",url:""},
-     ]},
+       {id:"rs20",type:"doc",  label:"CLS Buying Group Participation Guide",url:"https://www.cooperlighting.com"},
+       {id:"rs21",type:"doc",  label:"MDF Request Process & Forms",url:"https://www.cooperlighting.com"},
+       {id:"rs22",type:"form", label:"Marketing Calendar Template",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
   ],
+
+  // ─── SPEC ───────────────────────────────────────────────────────────────
   spec:[
-    {title:"Specifier Relationship Mapping",desc:"Identify and map your target A&E firms, lighting designers, and engineering consultants. Build a tiered contact list.",tip:"Focus on the specifier who WRITES the spec, not the one who approves it.",
-     resources:[{id:"s1",type:"doc",label:"Specifier Tier Matrix",url:""},{id:"s2",type:"doc",label:"A&E Firm Database",url:""},{id:"s3",type:"doc",label:"Relationship Mapping Template",url:""}]},
-    {title:"LEX Platform Mastery",desc:"Achieve full proficiency on the LEX platform. Post all NPI carousels, subscribe specifiers, review ASOW weekly.",tip:"Every Monday, open ASOW and find your top 5 opportunity gaps.",
-     resources:[{id:"s4",type:"doc",label:"LEX User Guide",url:""},{id:"s5",type:"doc",label:"ASOW Interpretation Guide",url:""},{id:"s6",type:"doc",label:"NPI Carousel Setup",url:""}]},
-    {title:"CEU & Event Program",desc:"Launch a structured CEU and specifier event program. Host minimum 2 non-standard events per quarter.",tip:"Host at your office, not theirs. It changes the power dynamic.",
-     resources:[{id:"s7",type:"doc",label:"CEU Planning Guide",url:""},{id:"s8",type:"doc",label:"Event ROI Calculator",url:""},{id:"s9",type:"doc",label:"AIA Event Standards",url:""}]},
-    {title:"Construct Connect & Pipeline",desc:"Activate Construct Connect subscription. Build a structured pipeline review cadence with your RSM.",tip:"A spec without a project number is a wish. A spec with a project number is a pipeline item.",
-     resources:[{id:"s10",type:"doc",label:"Construct Connect Setup",url:""},{id:"s11",type:"doc",label:"Pipeline Review Template",url:""},{id:"s12",type:"doc",label:"Lead Qualification Criteria",url:""}]},
-    {title:"APG Brand Proficiency",desc:"Train your full team on all APG brands — Halo, Portfolio, Metalux, and the full brand portfolio.",tip:"Share of wallet grows when your team can spec any APG brand with confidence.",
-     resources:[{id:"s13",type:"doc",label:"APG Brand Training",url:""},{id:"s14",type:"doc",label:"Brand Comparison Guide",url:""},{id:"s15",type:"doc",label:"Brand Selection Matrix",url:""}]},
-    {title:"VE Defense & Win/Loss Review",desc:"Build a documented VE defense capability. Conduct quarterly win/loss analysis on top projects.",tip:"The spec you lose to VE tells you more about your process than the spec you win.",
-     resources:[{id:"s16",type:"doc",label:"VE Defense Playbook",url:""},{id:"s17",type:"doc",label:"Win/Loss Template",url:""},{id:"s18",type:"doc",label:"Photometric Comparison Guide",url:""}]},
-    {title:"PM Capability & Communication",desc:"Develop project management capability for complex specifications. Build proactive communication process.",tip:"PM excellence is the difference between a spec that gets built and one that falls to substitution.",
-     resources:[{id:"s19",type:"doc",label:"PM Process Guide",url:""},{id:"s20",type:"doc",label:"Specification Tracking Template",url:""},{id:"s21",type:"doc",label:"Communication Cadence Guide",url:""}]},
-    {title:"Specification Excellence Review",desc:"Conduct a full spec business review: win/loss analysis, pipeline conversion rates, and team benchmarking.",tip:"Study your losses as carefully as your wins.",
-     resources:[{id:"s22",type:"doc",label:"Spec QBR Template",url:""},{id:"s23",type:"doc",label:"Win/Loss Analysis Framework",url:""},{id:"s24",type:"doc",label:"Pipeline Conversion Benchmarks",url:""}]},
+    {title:"Specifier Relationship Mapping",
+     desc:"Identify and map your target A&E firms, lighting designers, and engineering consultants. Build a tiered contact list with decision-maker names, project types, and annual volume estimates.",
+     tip:"Focus on the specifier who WRITES the spec, not the one who approves it. One relationship with the right lighting designer is worth more than ten with approvers.",
+     resources:[
+       {id:"ss1",type:"video",label:"Commercial Lighting: Working with a Designer | Smarter Spaces Podcast",url:"https://www.youtube.com/watch?v=D0GC2wZqqIs"},
+       {id:"ss2",type:"doc",  label:"Specifier Tier Matrix — Cooper Lighting",url:"https://www.cooperlighting.com"},
+       {id:"ss3",type:"doc",  label:"A&E Firm Identification & Outreach Guide",url:"https://www.cooperlighting.com"},
+       {id:"ss4",type:"link", label:"Construct Connect — Lead Intelligence Platform",url:"https://www.constructconnect.com"},
+     ],
+     keyPlayers:[
+       {name:"Patricia Vance",     company:"HGA Architects",       phone:"(612) 555-0234",email:"p.vance@hga.com",        actionTaken:"Intro meeting delivered — strong interest in HALO Commercial for upcoming clinic project.",nextSteps:"Send LEX carousel subscription invite and spec package",status:"active"},
+       {name:"Raymond Chu",        company:"AECOM Lighting Design", phone:"(617) 555-0381",email:"r.chu@aecom.com",       actionTaken:"Cold call — agreed to a lunch & learn in May",nextSteps:"Book venue and AIA CEU credit registration",status:"follow_up"},
+       {name:"Denise Hartley",     company:"Stantec Engineering",   phone:"(617) 555-0510",email:"d.hartley@stantec.com", actionTaken:"Subscribed to LEX mailing list. Received NPI carousel for Portfolio Linear.",nextSteps:"Follow up post-NPI with project opportunity conversation",status:"active"},
+     ]},
+    {title:"LEX Platform Mastery",
+     desc:"Achieve full proficiency on the LEX platform. Post all NPI carousels, subscribe active specifiers, review ASOW weekly. LEX is your single most powerful specification tool.",
+     tip:"Every Monday, open ASOW and find your top 5 opportunity gaps. Those are your calls for the week.",
+     resources:[
+       {id:"ss5",type:"video",label:"Cooper Lighting Solutions — Portfolio Overview",url:"https://www.youtube.com/watch?v=AZ_2j2EhiFE"},
+       {id:"ss6",type:"doc",  label:"LEX Platform User Guide",url:"https://www.cooperlighting.com"},
+       {id:"ss7",type:"doc",  label:"ASOW Weekly Interpretation Guide",url:"https://www.cooperlighting.com"},
+       {id:"ss8",type:"link", label:"LEX — Log In",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Sandra Yee",         company:"Stantec Engineering",   phone:"(617) 555-0510",email:"s.yee@stantec.com",     actionTaken:"Subscribed to LEX, confirmed email preferences. Active on 3 NPI carousels.",nextSteps:"Share Q2 ASOW gap report — book follow-up call",status:"active"},
+       {name:"Marcus Trent",       company:"WSP Global",            phone:"(212) 555-0291",email:"m.trent@wsp.com",       actionTaken:"LEX subscription confirmed. Opened Portfolio Linear carousel within 24 hrs.",nextSteps:"Reach out re: Midtown office project — ASOW shows CLS gap",status:"follow_up"},
+     ]},
+    {title:"CEU & Event Program",
+     desc:"Launch a structured CEU and specifier event program. Host minimum 2 non-standard events per quarter. When you host at your office, you control the room.",
+     tip:"Host at your office, not theirs. It changes the power dynamic and creates 3x more post-event follow-through.",
+     resources:[
+       {id:"ss9", type:"video",label:"HALO Commercial PR Series — Flexibility Showcase",url:"https://www.youtube.com/watch?v=K53VEpIGSpY"},
+       {id:"ss10",type:"doc",  label:"CEU Event Planning Guide — AIA Standards",url:"https://www.cooperlighting.com"},
+       {id:"ss11",type:"doc",  label:"CEU Event ROI Calculator",url:"https://www.cooperlighting.com"},
+       {id:"ss12",type:"link", label:"AIA CES Provider Registration",url:"https://www.aia.org/ces"},
+     ],
+     keyPlayers:[
+       {name:"Patricia Vance",     company:"HGA Architects",        phone:"(612) 555-0234",email:"p.vance@hga.com",       actionTaken:"Confirmed attendance at May 7 L&L. Bringing 2 junior designers.",nextSteps:"Send calendar hold and pre-reading material",status:"active"},
+       {name:"Kevin Oduya",        company:"Perkins+Will",          phone:"(312) 555-0448",email:"k.oduya@perkinswill.com",actionTaken:"Registered for May 7 CEU event. AIA credit confirmed.",nextSteps:"Assign as lead for post-event follow-up on Chicago tower project",status:"active"},
+       {name:"Anne-Marie Boucher", company:"SmithGroup",            phone:"(313) 555-0372",email:"am.boucher@smithgroup.com",actionTaken:"Attended Q1 CEU. Gave 5-star rating. Now on monthly LEX list.",nextSteps:"Invite to Q2 rooftop specifier dinner",status:"complete"},
+     ]},
+    {title:"Construct Connect & Pipeline",
+     desc:"Activate Construct Connect subscription. Build a structured pipeline review cadence with your RSM. A spec without a project number is a wish — a spec with one is pipeline.",
+     tip:"In every Construct Connect lead, identify the lead architect's name before calling. Never cold-call an A&E firm without knowing who writes the specs.",
+     resources:[
+       {id:"ss13",type:"link", label:"Construct Connect — Territory Intelligence",url:"https://www.constructconnect.com"},
+       {id:"ss14",type:"doc",  label:"Pipeline Review Template — CLS Spec",url:"https://www.cooperlighting.com"},
+       {id:"ss15",type:"doc",  label:"Lead Qualification Criteria Guide",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Raymond Chu",        company:"AECOM",                 phone:"(617) 555-0381",email:"r.chu@aecom.com",       actionTaken:"Boston Medical Center project identified via CC. First call made — meeting booked.",nextSteps:"Deliver spec presentation with HALO Commercial photometrics",status:"active"},
+     ]},
+    {title:"APG Brand Proficiency",
+     desc:"Train your full team on all APG brands — Halo, Portfolio, Metalux, and the full specification portfolio. Share of wallet grows when your team can spec any APG brand confidently.",
+     tip:"The rep who knows ALL the brands wins the spec before the conversation starts.",
+     resources:[
+       {id:"ss16",type:"video",label:"Cooper Lighting — HALO Commercial HC Overview",url:"https://www.youtube.com/watch?v=0dRctazjJds"},
+       {id:"ss17",type:"video",label:"HALO Commercial HC Downlights Series",url:"https://www.youtube.com/watch?v=bq4dNNPHS60"},
+       {id:"ss18",type:"doc",  label:"APG Brand Training Modules",url:"https://www.cooperlighting.com/global/brands"},
+       {id:"ss19",type:"link", label:"Cooper Lighting Full Brand Portfolio",url:"https://www.cooperlighting.com/global/brands"},
+     ],
+     keyPlayers:[]},
+    {title:"VE Defense & Win/Loss Review",
+     desc:"Build a documented VE defense capability. When a spec goes to value engineering, your photometric data and code compliance arguments are your weapons.",
+     tip:"Call the LD or EE the moment you hear 'VE review.' Not the contractor — the designer. That's who defends the spec.",
+     resources:[
+       {id:"ss20",type:"video",label:"Smarter Spaces — Lighting Design & Specification",url:"https://www.youtube.com/watch?v=D0GC2wZqqIs"},
+       {id:"ss21",type:"doc",  label:"VE Defense Playbook — CLS Field Guide",url:"https://www.cooperlighting.com"},
+       {id:"ss22",type:"doc",  label:"Photometric Comparison Tool Guide",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Denise Hartley",     company:"Stantec Engineering",   phone:"(617) 555-0510",email:"d.hartley@stantec.com", actionTaken:"VE threat on Harbor Tech campus. Responded with IES photometric comparison. Spec held.",nextSteps:"Document as case study for team sharing",status:"complete"},
+     ]},
+    {title:"PM Capability & Communication",
+     desc:"Develop project management capability for complex specifications. Build a proactive communication process with engineering and PM teams.",
+     tip:"PM excellence is the difference between a spec that gets built and one that falls to substitution at submittal.",
+     resources:[
+       {id:"ss23",type:"doc",  label:"PM Communication Process Guide",url:"https://www.cooperlighting.com"},
+       {id:"ss24",type:"doc",  label:"Specification Tracking Template",url:"https://www.cooperlighting.com"},
+       {id:"ss25",type:"form", label:"Submittal Response Checklist",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"Specification Excellence Review",
+     desc:"Conduct a full spec business review: win/loss analysis, pipeline conversion rates, and team benchmarking with your RSM.",
+     tip:"Study your losses as carefully as your wins. Every lost spec has a lesson that's worth more than the project.",
+     resources:[
+       {id:"ss26",type:"doc",  label:"Spec QBR Template",url:"https://www.cooperlighting.com"},
+       {id:"ss27",type:"doc",  label:"Win/Loss Analysis Framework",url:"https://www.cooperlighting.com"},
+       {id:"ss28",type:"form", label:"Pipeline Conversion Rate Calculator",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
   ],
+
+  // ─── INDUSTRIAL ──────────────────────────────────────────────────────────
   industrial:[
-    {title:"Industrial Market Landscape",desc:"Develop a deep understanding of the industrial lighting market — warehouse, manufacturing, food & beverage, cold storage, aerospace.",tip:"Map the full buying committee: Technical, Financial, and Operational stakeholders.",
-     resources:[{id:"i1",type:"doc",label:"Industrial Market Map",url:""},{id:"i2",type:"doc",label:"Vertical Segment Profiles",url:""},{id:"i3",type:"doc",label:"Decision Maker Guide",url:""}]},
-    {title:"Nemalux Product Mastery",desc:"Achieve deep product knowledge of the Nemalux portfolio — hazardous location, vapor-tight, high-bay, and explosion-proof fixtures.",tip:"Nemalux hazardous location certifications open doors competitors cannot enter.",
-     resources:[{id:"i4",type:"doc",label:"Nemalux Product Catalog",url:""},{id:"i5",type:"doc",label:"Hazardous Location Guide",url:""},{id:"i6",type:"doc",label:"Certification Reference Sheet",url:""}]},
-    {title:"Retrofit Audit & Energy Assessment",desc:"Build capability to conduct professional lighting retrofit audits. Learn to project post-retrofit savings.",tip:"Always lead with the payback period and annual kWh savings.",
-     resources:[{id:"i7",type:"doc",label:"Retrofit Audit Toolkit",url:""},{id:"i8",type:"doc",label:"Energy Savings Calculator",url:""},{id:"i9",type:"doc",label:"ROI Presentation Template",url:""}]},
-    {title:"Utility Rebate Program Execution",desc:"Master the utility rebate landscape. Know which utilities offer rebates, their rates, and application processes.",tip:"In many territories, rebates reduce effective project cost by 15–30%.",
-     resources:[{id:"i10",type:"doc",label:"Utility Rebate Database",url:""},{id:"i11",type:"doc",label:"Rebate Application Checklist",url:""},{id:"i12",type:"doc",label:"DSIRE Program Directory",url:""}]},
-    {title:"National Account & Enterprise Strategy",desc:"Identify national and enterprise accounts in your territory and develop a coordinated approach.",tip:"Find one champion inside a national account's local facility.",
-     resources:[{id:"i13",type:"doc",label:"National Account Program Overview",url:""},{id:"i14",type:"doc",label:"Enterprise Account Strategy Guide",url:""},{id:"i15",type:"doc",label:"Corp vs. Local Decision Matrix",url:""}]},
-    {title:"Industrial Application & Photometric Design",desc:"Develop technical capability to specify industrial lighting by application.",tip:"IES RP-2 and RP-7 are the governing standards for industrial lighting design.",
-     resources:[{id:"i16",type:"doc",label:"IES Industrial Lighting Guidelines",url:""},{id:"i17",type:"doc",label:"Warehouse Layout Design Guide",url:""},{id:"i18",type:"doc",label:"Emergency Lighting Compliance",url:""}]},
-    {title:"Competitive Intelligence & Value Selling",desc:"Build a current competitive matrix for industrial lighting. Train your team to sell value using TCO models.",tip:"Compete on certification depth, warranty terms, local support, and energy performance — not price.",
-     resources:[{id:"i19",type:"doc",label:"Industrial Competitive Matrix",url:""},{id:"i20",type:"doc",label:"TCO Calculator",url:""},{id:"i21",type:"doc",label:"Value Selling Guide",url:""}]},
-    {title:"MWS Quoting & In-House Layout Capability",desc:"Build internal capability to generate CLS/Nemalux industrial quotes and MWS layouts.",tip:"Speed wins in industrial quoting. 24 hours vs. 72 hours wins 60%+ of the time.",
-     resources:[{id:"i22",type:"doc",label:"MWS Quote Guide",url:""},{id:"i23",type:"doc",label:"Product Configuration Rules",url:""},{id:"i24",type:"doc",label:"Quote Turnaround Best Practices",url:""}]},
-    {title:"Controls Integration in Industrial",desc:"Understand how industrial controls — occupancy sensors, daylight harvesting, WLX Lite — apply to warehouse and manufacturing.",tip:"Adding controls to an industrial retrofit typically improves energy ROI by 20–35%.",
-     resources:[{id:"i25",type:"doc",label:"Industrial Controls Guide",url:""},{id:"i26",type:"doc",label:"WLX Lite for Warehouse",url:""},{id:"i27",type:"doc",label:"Controls ROI Calculator",url:""}]},
-    {title:"Industrial Excellence Review",desc:"Review your full industrial pipeline by vertical, project stage, and revenue potential.",tip:"Any opportunity with no activity in 30 days needs a re-engagement plan.",
-     resources:[{id:"i28",type:"doc",label:"Industrial Pipeline Review Template",url:""},{id:"i29",type:"doc",label:"Account Scoring Matrix",url:""},{id:"i30",type:"doc",label:"90-Day Action Planner",url:""}]},
+    {title:"Industrial Market Landscape",
+     desc:"Develop a deep understanding of the industrial lighting market — warehouse, manufacturing, food & beverage, cold storage, aerospace, and petrochemical. Map the full buying committee for each vertical.",
+     tip:"In industrial, the decision maker is often the VP of Operations or the Maintenance Director — not procurement. Find them first.",
+     resources:[
+       {id:"ri1",type:"video",label:"Nemalux LED Lighting — Company Profile & Applications",url:"https://www.youtube.com/watch?v=iIj80DNIEes"},
+       {id:"ri2",type:"video",label:"Cooper Lighting + Nemalux Expansion — Today in Lighting",url:"https://www.youtube.com/watch?v=XgNe7x05ozs"},
+       {id:"ri3",type:"doc",  label:"Industrial Market Vertical Guide",url:"https://www.cooperlighting.com"},
+       {id:"ri4",type:"link", label:"Nemalux Industrial Product Portfolio",url:"https://www.nemalux.com"},
+     ],
+     keyPlayers:[
+       {name:"Carlos Espinoza",    company:"Sysco Foods — Gulf Region",phone:"(713) 555-0621",email:"c.espinoza@sysco.com",  actionTaken:"Door-opener call made. 400K sq ft cold storage facility. Audit walk booked May 14.",nextSteps:"Prepare Nemalux vapor-tight proposal with utility rebate projection",status:"active"},
+       {name:"Derek Pollard",      company:"Boeing Defense — Houston", phone:"(281) 555-0874",email:"d.pollard@boeing.com",   actionTaken:"Identified HazLoc upgrade need in 3 MRO bays. Nemalux Class I Div 2 samples delivered.",nextSteps:"Follow up with facility engineering on Class I Div 2 certification docs",status:"follow_up"},
+       {name:"Rhonda Kim",         company:"Amazon Fulfillment BHM1",  phone:"(205) 555-0399",email:"r.kim@amazon.com",       actionTaken:"Meeting held with facility maintenance director. ROI model in development.",nextSteps:"Present Nemalux high-bay ROI at next site visit",status:"active"},
+     ]},
+    {title:"Nemalux Product Mastery",
+     desc:"Achieve deep product knowledge of the Nemalux portfolio — hazardous location, vapor-tight, high-bay, and explosion-proof fixtures. Know the certifications cold.",
+     tip:"Nemalux HazLoc certifications open doors competitors literally cannot enter. Know them by heart before your first industrial call.",
+     resources:[
+       {id:"ri5",type:"video",label:"Nemalux — Hazardous Location Lighting Channel",url:"https://www.youtube.com/watch?v=iIj80DNIEes"},
+       {id:"ri6",type:"video",label:"Nemalux GS Series Product Education",url:"https://www.youtube.com/watch?v=-omiiLzRFug"},
+       {id:"ri7",type:"video",label:"Nemalux MR Series — Industrial & Architectural",url:"https://www.youtube.com/watch?v=AA9n31qaZpw"},
+       {id:"ri8",type:"doc",  label:"Nemalux Product Catalog & Certifications",url:"https://www.nemalux.com/products"},
+       {id:"ri9",type:"link", label:"Class I Div 1 & Div 2 Certification Reference",url:"https://www.nemalux.com"},
+     ],
+     keyPlayers:[
+       {name:"Derek Pollard",      company:"Boeing Defense",          phone:"(281) 555-0874",email:"d.pollard@boeing.com",   actionTaken:"Reviewed Nemalux Class I Div 2 spec sheet. Confirmed product fit for 3 bays.",nextSteps:"Submit formal quote with Class I Div 2 certification package",status:"active"},
+     ]},
+    {title:"Retrofit Audit & Energy Assessment",
+     desc:"Build capability to conduct professional lighting retrofit audits. Learn to project post-retrofit savings. The audit is your foot in the door AND your proposal.",
+     tip:"Always lead with the payback period and annual kWh savings. A 3-year payback speaks louder than any product feature.",
+     resources:[
+       {id:"ri10",type:"video",label:"Nemalux LED vs. HID — Industrial ROI Case Study",url:"https://www.youtube.com/watch?v=iIj80DNIEes"},
+       {id:"ri11",type:"doc",  label:"CLS Retrofit Audit Toolkit",url:"https://www.cooperlighting.com"},
+       {id:"ri12",type:"form", label:"Energy Savings Calculator",url:"https://www.cooperlighting.com"},
+       {id:"ri13",type:"doc",  label:"ROI Presentation Template — Industrial",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Carlos Espinoza",    company:"Sysco Foods",             phone:"(713) 555-0621",email:"c.espinoza@sysco.com",   actionTaken:"Retrofit audit completed — 680 vapor-tight fixtures. $210K project scope. $28K rebate filed.",nextSteps:"Present final ROI model and secure PO approval",status:"active"},
+       {name:"Rhonda Kim",         company:"Amazon Fulfillment BHM1", phone:"(205) 555-0399",email:"r.kim@amazon.com",       actionTaken:"Audit scheduled May 14. Energy baseline data received from facilities team.",nextSteps:"Complete audit; prepare savings model within 5 business days",status:"follow_up"},
+     ]},
+    {title:"Utility Rebate Program Execution",
+     desc:"Master the utility rebate landscape. Know every rebate program in your territory by name, rate, and application deadline.",
+     tip:"In many territories, rebates reduce effective project cost by 15-30%. This turns a 5-year payback into a 3-year payback automatically.",
+     resources:[
+       {id:"ri14",type:"link", label:"DSIRE — Database of State Incentives for Renewables",url:"https://www.dsireusa.org"},
+       {id:"ri15",type:"doc",  label:"CLS Utility Rebate Program Directory",url:"https://www.cooperlighting.com"},
+       {id:"ri16",type:"form", label:"Rebate Application Checklist",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Jessica Morin",      company:"CenterPoint Energy",      phone:"(713) 555-0901",email:"j.morin@centerpointenergy.com",actionTaken:"Confirmed $28K rebate eligibility for Sysco cold storage project. Application submitted.",nextSteps:"Track application status — 6-8 week processing window",status:"active"},
+     ]},
+    {title:"National Account & Enterprise Strategy",
+     desc:"Identify national and enterprise accounts in your territory and develop a coordinated approach with your RSM and Cooper national accounts team.",
+     tip:"Find one champion inside a national account's local facility. That's your entry point — not corporate procurement.",
+     resources:[
+       {id:"ri17",type:"doc",  label:"CLS National Account Program Overview",url:"https://www.cooperlighting.com"},
+       {id:"ri18",type:"doc",  label:"Enterprise Account Strategy Guide",url:"https://www.cooperlighting.com"},
+       {id:"ri19",type:"doc",  label:"Corp vs. Local Decision Matrix",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"Industrial Application & Photometric Design",
+     desc:"Develop technical capability to specify industrial lighting by application. Know IES RP-2 and RP-7 standards for warehouse and manufacturing illumination.",
+     tip:"When a competitor quotes 30FC, spec 50FC with uniformity. Make the performance gap undeniable on paper.",
+     resources:[
+       {id:"ri20",type:"video",label:"Nemalux Product Education — GS Series",url:"https://www.youtube.com/watch?v=-omiiLzRFug"},
+       {id:"ri21",type:"link", label:"IES Industrial Lighting Standards — RP-2 & RP-7",url:"https://www.ies.org"},
+       {id:"ri22",type:"doc",  label:"Warehouse Layout Design Guide — CLS",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"Competitive Intelligence & Value Selling",
+     desc:"Build a current competitive matrix for industrial lighting. Train your team to sell value using TCO models instead of price per fixture.",
+     tip:"Compete on certification depth, warranty terms, local support, and energy performance. The competitor who leads with price is the one you want to be competing against.",
+     resources:[
+       {id:"ri23",type:"video",label:"Nemalux — The MR Series Industrial Luminaire",url:"https://www.youtube.com/watch?v=AA9n31qaZpw"},
+       {id:"ri24",type:"doc",  label:"Industrial Competitive Matrix — CLS vs. Market",url:"https://www.cooperlighting.com"},
+       {id:"ri25",type:"form", label:"TCO (Total Cost of Ownership) Calculator",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"MWS Quoting & In-House Layout Capability",
+     desc:"Build internal capability to generate CLS/Nemalux industrial quotes and MWS optimized layouts within 24 hours.",
+     tip:"Speed wins in industrial quoting. 24 hours vs. 72 hours wins 60%+ of the time. The contractor who gets the quote first sets the benchmark.",
+     resources:[
+       {id:"ri26",type:"doc",  label:"MWS Quote Generation Guide",url:"https://www.cooperlighting.com"},
+       {id:"ri27",type:"doc",  label:"Product Configuration Rules — Industrial",url:"https://www.cooperlighting.com"},
+       {id:"ri28",type:"form", label:"Quote Turnaround Tracking Template",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"Controls Integration in Industrial",
+     desc:"Understand how industrial controls — occupancy sensors, daylight harvesting, WLX LITE — apply to warehouse and manufacturing environments to maximize energy ROI.",
+     tip:"Adding controls to an industrial retrofit typically improves energy ROI by 20-35%. Always quote the controls option alongside the base fixture package.",
+     resources:[
+       {id:"ri29",type:"video",label:"Cooper Lighting Solutions: WaveLinx LITE Overview",url:"https://www.youtube.com/watch?v=6u_J_NualIg"},
+       {id:"ri30",type:"video",label:"WaveLinx LITE Overview Video",url:"https://www.youtube.com/watch?v=dmIqTwEcZ0Q"},
+       {id:"ri31",type:"doc",  label:"Industrial Controls Application Guide",url:"https://www.cooperlighting.com"},
+       {id:"ri32",type:"link", label:"WaveLinx LITE Product Page",url:"https://www.cooperlighting.com/global/brands/wavelinx/lite"},
+     ],
+     keyPlayers:[]},
+    {title:"Industrial Excellence Review",
+     desc:"Review your full industrial pipeline by vertical, project stage, and revenue potential. Identify accounts with no activity in 30 days and create re-engagement plans.",
+     tip:"Any opportunity with no activity in 30 days needs a re-engagement plan. A good question reopens more doors than a new pitch.",
+     resources:[
+       {id:"ri33",type:"doc",  label:"Industrial Pipeline Review Template",url:"https://www.cooperlighting.com"},
+       {id:"ri34",type:"form", label:"Account Scoring & Priority Matrix",url:"https://www.cooperlighting.com"},
+       {id:"ri35",type:"doc",  label:"90-Day Action Planner — Industrial",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
   ],
+
+  // ─── CONNECTED ────────────────────────────────────────────────────────────
   connected:[
-    {title:"Connected Lighting Fundamentals",desc:"Build a foundation in connected lighting systems — wired vs. wireless controls, protocol types (0-10V, DALI, Zigbee, BACnet).",tip:"Practice your 60-second connected lighting explanation until any facility manager can understand it.",
-     resources:[{id:"c1",type:"doc",label:"Connected Lighting Primer",url:""},{id:"c2",type:"doc",label:"Protocol Comparison Guide",url:""},{id:"c3",type:"doc",label:"Controls Terminology Glossary",url:""}]},
-    {title:"WLX Platform Deep Dive",desc:"Achieve comprehensive knowledge of the full WLX platform family. Understand the product hierarchy and application scenarios.",tip:"Know WLX well enough to demo it on a tablet in 10 minutes without preparation.",
-     resources:[{id:"c4",type:"doc",label:"WLX Platform Overview",url:""},{id:"c5",type:"doc",label:"WLX Product Family Comparison",url:""},{id:"c6",type:"doc",label:"WLX Application Guide",url:""}]},
-    {title:"ILC & Intelligent Lighting Controls",desc:"Master the ILC portfolio — sensors, drivers, gateways, and software. Understand how ILC integrates with BMS/BAS.",tip:"In any project with a BMS, ILC integration is a specification requirement.",
-     resources:[{id:"c7",type:"doc",label:"ILC Product Guide",url:""},{id:"c8",type:"doc",label:"BMS Integration Overview",url:""},{id:"c9",type:"doc",label:"ASHRAE 90.1 Controls Requirements",url:""}]},
-    {title:"SPEC 360 Proficiency & Controls Design",desc:"Achieve full proficiency in SPEC 360 for controls system design and lighting control zone layouts.",tip:"A complete controls specification makes substitution nearly impossible.",
-     resources:[{id:"c10",type:"doc",label:"SPEC 360 User Guide",url:""},{id:"c11",type:"doc",label:"Controls Zone Design Guide",url:""},{id:"c12",type:"doc",label:"Sensor Placement Standards",url:""}]},
-    {title:"Controls Quoting — Small to Enterprise",desc:"Build quoting capability from simple $15K retrofits to $500K+ enterprise WLX deployments.",tip:"Separate your controls quote into three components: hardware, commissioning, and ongoing support/warranty.",
-     resources:[{id:"c13",type:"doc",label:"Controls Quoting Playbook",url:""},{id:"c14",type:"doc",label:"Scope Definition Template",url:""},{id:"c15",type:"doc",label:"Enterprise Proposal Framework",url:""}]},
-    {title:"WLX Certification Achievement",desc:"Complete WLX Certification — the formal credential that establishes your controls champion.",tip:"Agencies with at least one WLX-certified rep are 3x more likely to be spec'd on connected projects.",
-     resources:[{id:"c16",type:"doc",label:"WLX Certification Study Guide",url:""},{id:"c17",type:"doc",label:"Certification Exam Prep",url:""},{id:"c18",type:"doc",label:"Post-Cert Marketing Assets",url:""}]},
-    {title:"Demo Case Development",desc:"Build a professional WLX demo case and develop a structured demonstration methodology.",tip:"Always leave a demo case on-site for 48–72 hours. Buyers who live with the technology become advocates.",
-     resources:[{id:"c19",type:"doc",label:"Demo Case Setup Guide",url:""},{id:"c20",type:"doc",label:"Demo Script by Audience",url:""},{id:"c21",type:"doc",label:"Demo Best Practices",url:""}]},
-    {title:"On-Site Commissioning Excellence",desc:"Develop in-house commissioning capability for WLX and ILC systems.",tip:"Treat every commissioned project as a potential reference site from day one.",
-     resources:[{id:"c22",type:"doc",label:"Commissioning Standards Guide",url:""},{id:"c23",type:"doc",label:"WLX Commissioning Checklist",url:""},{id:"c24",type:"doc",label:"Reference Site Development Guide",url:""}]},
-    {title:"Attachment Rate Optimization",desc:"Analyze your current controls attachment rate. Set a target of 10% of total agency revenue.",tip:"Controls attachment rate increases when it becomes a standard agenda item on every project review.",
-     resources:[{id:"c25",type:"doc",label:"Attachment Rate Calculator",url:""},{id:"c26",type:"doc",label:"Controls Opportunity Identification Guide",url:""},{id:"c27",type:"doc",label:"10% Revenue Target Roadmap",url:""}]},
-    {title:"Benchmarking & Industry Leadership",desc:"Identify the top-performing controls agency in the CLS network and request a formal benchmarking session.",tip:"Speak at one industry event per year on a controls topic.",
-     resources:[{id:"c28",type:"doc",label:"CLS Agency Benchmarking Program",url:""},{id:"c29",type:"doc",label:"IES Membership Guide",url:""},{id:"c30",type:"doc",label:"Thought Leadership Playbook",url:""}]},
+    {title:"Connected Lighting Fundamentals",
+     desc:"Build a foundation in connected lighting systems — wired vs. wireless protocols, 0-10V, DALI, Zigbee, BACnet, and how they apply to real commercial projects.",
+     tip:"Practice your 60-second connected lighting explanation until any facility manager understands it. If you need more than 60 seconds, you don't know it well enough yet.",
+     resources:[
+       {id:"rc1",type:"video",label:"Cooper Lighting — Connected Lighting Overview",url:"https://www.youtube.com/watch?v=AZ_2j2EhiFE"},
+       {id:"rc2",type:"video",label:"LCA TV: WaveLinx by Cooper Lighting — LEDucation 2024",url:"https://www.youtube.com/watch?v=MTLIGT-BEK8"},
+       {id:"rc3",type:"video",label:"Cooper Lighting's WaveLinx System Update",url:"https://www.youtube.com/watch?v=a6ffI-kYtos"},
+       {id:"rc4",type:"doc",  label:"Connected Lighting Primer — IES LP-12 Summary",url:"https://www.cooperlighting.com"},
+       {id:"rc5",type:"link", label:"Cooper Lighting — Controls Education Center",url:"https://www.cooperlighting.com/global/services-and-software/control-services-education"},
+     ],
+     keyPlayers:[
+       {name:"Sarah Kim",          company:"Agency — Controls Champion",phone:"(281) 555-0102",email:"s.kim@agency.com",       actionTaken:"Designated as controls champion. Completed Connected Lighting Fundamentals module.",nextSteps:"Register for WLX Level 1 training — next session May 6",status:"active"},
+     ]},
+    {title:"WLX Platform Deep Dive",
+     desc:"Achieve comprehensive knowledge of the full WaveLinx platform family — WLX CAT, LITE, PRO, CORE, and Wired. Understand product hierarchy and when to specify each.",
+     tip:"Know WLX well enough to demo it on a tablet in 10 minutes without preparation. That's the bar.",
+     resources:[
+       {id:"rc6",type:"video",label:"Cooper Lighting Solutions: WaveLinx CAT",url:"https://www.youtube.com/watch?v=oWc7knCHXfc"},
+       {id:"rc7",type:"video",label:"Cooper Lighting Solutions: WaveLinx LITE",url:"https://www.youtube.com/watch?v=6u_J_NualIg"},
+       {id:"rc8",type:"video",label:"Cooper Lighting Solutions: WaveLinx CORE",url:"https://www.youtube.com/watch?v=JXJmJnvPJFM"},
+       {id:"rc9",type:"video",label:"Spark'd Sessions: WaveLinx CAT Controls Showcase 2025",url:"https://www.youtube.com/watch?v=Auabubpldx0"},
+       {id:"rc10",type:"link",label:"WaveLinx Full Product Family — cooperlighting.com",url:"https://www.cooperlighting.com/global/brands/wavelinx"},
+     ],
+     keyPlayers:[
+       {name:"Sarah Kim",          company:"Agency — Controls Champion",phone:"(281) 555-0102",email:"s.kim@agency.com",       actionTaken:"Completed WLX CAT and LITE modules. WLX PRO training in progress.",nextSteps:"Complete WLX CORE module before certification exam",status:"active"},
+       {name:"James Forsythe",     company:"Cushman & Wakefield",       phone:"(713) 555-0876",email:"j.forsythe@cushwake.com", actionTaken:"Left WLX CAT demo case on-site. Facility manager fascinated by occupancy sensing.",nextSteps:"Follow up Friday — book formal controls proposal meeting",status:"active"},
+     ]},
+    {title:"ILC & Intelligent Lighting Controls",
+     desc:"Master the ILC portfolio — sensors, drivers, gateways, and software. Understand how ILC integrates with BMS/BAS platforms via BACnet and REST API.",
+     tip:"In any project with a BMS, ILC integration is a specification requirement — not an option. Know BACnet basics before the first meeting.",
+     resources:[
+       {id:"rc11",type:"video",label:"WaveLinx PRO Playlist — Cooper Lighting",url:"https://www.youtube.com/playlist?list=PLL5zeUKJXPacdYSoF_qQo1Ixpv0uj8Zvr"},
+       {id:"rc12",type:"video",label:"Cooper Lighting's WaveLinx Connected System",url:"https://www.youtube.com/watch?v=pgJKlIc2Ldo"},
+       {id:"rc13",type:"doc",  label:"ILC Product Portfolio Guide",url:"https://www.cooperlighting.com"},
+       {id:"rc14",type:"doc",  label:"BMS Integration — BACnet & REST API Overview",url:"https://www.cooperlighting.com"},
+       {id:"rc15",type:"link", label:"ASHRAE 90.1 Lighting Controls Requirements",url:"https://www.ashrae.org"},
+     ],
+     keyPlayers:[
+       {name:"Priya Nair",         company:"JLL Building Operations", phone:"(212) 555-0543",email:"p.nair@jll.com",          actionTaken:"Pre-design meeting held. BACnet integration requirement confirmed. ILC gateway spec drafted.",nextSteps:"Submit ILC gateway spec to mechanical engineer for BMS coordination",status:"active"},
+       {name:"Tom Bucci",          company:"WSP Building Systems",    phone:"(617) 555-0291",email:"t.bucci@wsp.com",         actionTaken:"Attended ILC webinar. Requested BACnet integration data sheet for hospital project.",nextSteps:"Send BACnet data sheet + arrange SPEC 360 demo",status:"follow_up"},
+     ]},
+    {title:"SPEC 360 Proficiency & Controls Design",
+     desc:"Achieve full proficiency in SPEC 360 for controls system design, lighting control zone layouts, and sensor placement validation.",
+     tip:"A complete controls specification generated in SPEC 360 makes substitution nearly impossible. It's your best VE defense in the controls world.",
+     resources:[
+       {id:"rc16",type:"video",label:"Cooper Lighting: WaveLinx Wired — Complex Spaces",url:"https://www.youtube.com/watch?v=a6ffI-kYtos"},
+       {id:"rc17",type:"doc",  label:"SPEC 360 User Guide",url:"https://www.cooperlighting.com"},
+       {id:"rc18",type:"doc",  label:"Controls Zone Design Standards",url:"https://www.cooperlighting.com"},
+       {id:"rc19",type:"form", label:"Sensor Placement Validation Checklist",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Sarah Kim",          company:"Agency — Controls Champion",phone:"(281) 555-0102",email:"s.kim@agency.com",       actionTaken:"SPEC 360 training completed. First independent controls zone layout submitted for review.",nextSteps:"Have David Park review layout before client delivery",status:"active"},
+     ]},
+    {title:"Controls Quoting — Small to Enterprise",
+     desc:"Build quoting capability from simple $15K office retrofits to $500K+ enterprise WLX deployments. Always separate hardware, commissioning, and support into three line items.",
+     tip:"Separate your controls quote into three components: hardware, commissioning, and ongoing support/warranty. It professionalizes the proposal and protects your margin on each.",
+     resources:[
+       {id:"rc20",type:"video",label:"WaveLinx System — Energy Management Overview",url:"https://www.youtube.com/watch?v=a6ffI-kYtos"},
+       {id:"rc21",type:"doc",  label:"Controls Quoting Playbook — Small to Enterprise",url:"https://www.cooperlighting.com"},
+       {id:"rc22",type:"form", label:"Scope of Work Definition Template",url:"https://www.cooperlighting.com"},
+       {id:"rc23",type:"doc",  label:"Enterprise Controls Proposal Framework",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"James Forsythe",     company:"Cushman & Wakefield",      phone:"(713) 555-0876",email:"j.forsythe@cushwake.com", actionTaken:"Quote submitted: $38K WLX CAT system, 48 sensors, commissioning included. Decision pending.",nextSteps:"Follow up Thursday — confirm decision-maker has reviewed proposal",status:"follow_up"},
+       {name:"Priya Nair",         company:"JLL Building Operations",  phone:"(212) 555-0543",email:"p.nair@jll.com",          actionTaken:"RFP response submitted for $220K enterprise WLX CORE deployment. Shortlisted.",nextSteps:"Clarify commissioning timeline at final review meeting",status:"active"},
+     ]},
+    {title:"WLX Certification Achievement",
+     desc:"Complete WLX Certification — the formal credential that establishes your controls champion and unlocks advanced project support from Cooper Lighting.",
+     tip:"Agencies with at least one WLX-certified rep are 3x more likely to be specified on connected projects. This is the single highest-ROI training investment in the connected segment.",
+     resources:[
+       {id:"rc24",type:"video",label:"SeaTac Lighting — WaveLinx Update & New Features 2025",url:"https://www.youtube.com/watch?v=lLUrn7s__kY"},
+       {id:"rc25",type:"link", label:"WLX Certification — Cooper Education Center",url:"https://www.cooperlighting.com/global/services-and-software/control-services-education"},
+       {id:"rc26",type:"doc",  label:"WLX Certification Study Guide",url:"https://www.cooperlighting.com"},
+       {id:"rc27",type:"doc",  label:"Post-Certification Marketing Assets Kit",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Sarah Kim",          company:"Agency — Controls Champion",phone:"(281) 555-0102",email:"s.kim@agency.com",       actionTaken:"WLX Level 2 exam taken May 10. Awaiting result (3-5 business days).",nextSteps:"Plan internal team announcement + client marketing once certified",status:"active"},
+     ]},
+    {title:"Demo Case Development",
+     desc:"Build a professional WLX demo case and develop a structured demonstration methodology by audience type — owner, engineer, contractor.",
+     tip:"Always leave a demo case on-site for 48-72 hours. Buyers who live with the technology become advocates. The tech sells itself if given the time.",
+     resources:[
+       {id:"rc28",type:"video",label:"Cooper Lighting Solutions: WaveLinx CAT Demo",url:"https://www.youtube.com/watch?v=oWc7knCHXfc"},
+       {id:"rc29",type:"video",label:"WaveLinx LITE Overview — App-Based System",url:"https://www.youtube.com/watch?v=dmIqTwEcZ0Q"},
+       {id:"rc30",type:"doc",  label:"Demo Case Setup & Hardware Guide",url:"https://www.cooperlighting.com"},
+       {id:"rc31",type:"doc",  label:"WLX Demo Script by Audience Type",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"James Forsythe",     company:"Cushman & Wakefield",      phone:"(713) 555-0876",email:"j.forsythe@cushwake.com", actionTaken:"Demo case left on-site 72 hrs. Facility manager demonstrated occupancy to his CFO.",nextSteps:"Retrieve case Monday. Book formal proposal presentation.",status:"complete"},
+       {name:"Karen Liao",         company:"Parkway Office Center",    phone:"(832) 555-0662",email:"k.liao@parkwayoffice.com",actionTaken:"Demo case delivered. Owner reviewed app personally — loved scheduling feature.",nextSteps:"Present $38K WLX CAT spec. Owner wants to proceed.",status:"complete"},
+     ]},
+    {title:"On-Site Commissioning Excellence",
+     desc:"Develop in-house commissioning capability for WLX and ILC systems. Treat every commissioned project as a potential reference site from day one.",
+     tip:"Your best sales tool is a working WLX system you can show. Invest in every commissioning like it's your most valuable reference site — because it is.",
+     resources:[
+       {id:"rc32",type:"video",label:"Cooper Lighting — WaveLinx PRO System",url:"https://www.youtube.com/playlist?list=PLL5zeUKJXPacdYSoF_qQo1Ixpv0uj8Zvr"},
+       {id:"rc33",type:"link", label:"CLS Factory Startup & Commissioning Services",url:"https://www.cooperlighting.com/global/services-and-software"},
+       {id:"rc34",type:"doc",  label:"WLX Commissioning Standards Checklist",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[
+       {name:"Karen Liao",         company:"Parkway Office Center",    phone:"(832) 555-0662",email:"k.liao@parkwayoffice.com",actionTaken:"Project commissioned. 48 sensors live. Energy baseline set. System running.",nextSteps:"Schedule 30-day post-commissioning check-in call",status:"complete"},
+     ]},
+    {title:"Attachment Rate Optimization",
+     desc:"Analyze your current controls attachment rate. Set a target of 10% of total agency revenue and track it weekly.",
+     tip:"Controls attachment rate increases when it becomes a standard agenda item on every project review — not a special topic. Make it routine.",
+     resources:[
+       {id:"rc35",type:"video",label:"WaveLinx Update — Smarter, Faster, Simpler 2025",url:"https://www.youtube.com/watch?v=lLUrn7s__kY"},
+       {id:"rc36",type:"form", label:"Controls Attachment Rate Calculator",url:"https://www.cooperlighting.com"},
+       {id:"rc37",type:"doc",  label:"10% Revenue Target Roadmap — Controls",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
+    {title:"Benchmarking & Industry Leadership",
+     desc:"Identify the top-performing controls agency in the CLS network and request a formal benchmarking session. Commit to speaking at one industry event per year.",
+     tip:"The agency that shares knowledge publicly becomes the agency everyone wants to buy from. Thought leadership is a long game with the highest returns.",
+     resources:[
+       {id:"rc38",type:"video",label:"Spark'd Sessions S2 E3 — WaveLinx CAT Controls",url:"https://www.youtube.com/watch?v=Auabubpldx0"},
+       {id:"rc39",type:"link", label:"IES — Illuminating Engineering Society Membership",url:"https://www.ies.org"},
+       {id:"rc40",type:"doc",  label:"CLS Agency Benchmarking Program",url:"https://www.cooperlighting.com"},
+     ],
+     keyPlayers:[]},
   ],
 };
-const TEAM_ROLES=[{role:"Customer Service",icon:"🎧",color:"#2563EB"},{role:"Pricing",icon:"💲",color:"#7C3AED"},{role:"Applications",icon:"📐",color:"#D97706"},{role:"Post Sales",icon:"🔧",color:"#059669"},{role:"DSS",icon:"📊",color:"#0891B2"},{role:"Spec RSM",icon:"🏗️",color:"#7C3AED"},{role:"Area VP",icon:"⭐",color:"#13294B"},{role:"Controls Specialist",icon:"💡",color:"#059669"}];
+
+const TEAM_ROLES=[
+  {role:"Customer Service",    icon:"🎧",color:"#2563EB", firstName:"Angela",  lastName:"Torres",   phone:"(770) 486-4900",email:"angela.torres@cooperlighting.com",    areas:"Order management, shipment tracking, returns"},
+  {role:"Pricing",             icon:"💲",color:"#7C3AED", firstName:"Kevin",   lastName:"Marsh",    phone:"(770) 486-4820",email:"kevin.marsh@cooperlighting.com",      areas:"Quote pricing, walkaway floors, special pricing requests"},
+  {role:"Applications",        icon:"📐",color:"#D97706", firstName:"Diana",   lastName:"Ruiz",     phone:"(770) 486-4755",email:"diana.ruiz@cooperlighting.com",       areas:"Photometric layouts, product selection, energy calcs"},
+  {role:"Post Sales",          icon:"🔧",color:"#059669", firstName:"Marcus",  lastName:"Huang",    phone:"(770) 486-4830",email:"marcus.huang@cooperlighting.com",     areas:"Warranty claims, field issues, technical support"},
+  {role:"DSS",                 icon:"📊",color:"#0891B2", firstName:"Priscilla",lastName:"Webb",    phone:"(770) 486-4780",email:"priscilla.webb@cooperlighting.com",   areas:"CRM support, Prism/LEX, EDI, data & reporting"},
+  {role:"Spec RSM",            icon:"🏗️",color:"#7C3AED", firstName:"",       lastName:"",         phone:"",              email:"",                                    areas:"Specification strategy, A&E relationships, LEX ASOW"},
+  {role:"Area VP",             icon:"⭐",color:"#13294B", firstName:"",        lastName:"",         phone:"",              email:"",                                    areas:"Business planning, executive alignment, escalations"},
+  {role:"Controls Specialist", icon:"💡",color:"#059669", firstName:"Nathan",  lastName:"Cho",      phone:"(770) 486-4860",email:"nathan.cho@cooperlighting.com",       areas:"WLX design, SPEC 360, commissioning support, ILC"},
+];
 
 function TeamCard({member,onUpdate}){
   const [editing,setEditing]=useState(false);const [draft,setDraft]=useState(member);
@@ -1066,8 +1380,12 @@ function TeamCard({member,onUpdate}){
   );
 }
 
-function KeyPlayersTracker({stepTitle,segColor}){
-  const [players,setPlayers]=useState([]);const [showForm,setShowForm]=useState(false);const [expandId,setExpandId]=useState(null);const [editId,setEditId]=useState(null);
+function KeyPlayersTracker({stepTitle,segColor,initialPlayers=[]}){
+  const [players,setPlayers]=useState(()=>initialPlayers.map((p,i)=>({
+    ...p,
+    id:p.id||("seed_"+i),
+    createdAt:p.createdAt||"Demo data",
+  })));const [showForm,setShowForm]=useState(false);const [expandId,setExpandId]=useState(null);const [editId,setEditId]=useState(null);
   const blank={name:"",company:"",phone:"",email:"",actionTaken:"",nextSteps:"",status:"active"};
   const [form,setForm]=useState(blank);
   const statusColor={active:"#059669",follow_up:"#D97706",complete:"#2563EB",paused:"#9F9F9F"};
@@ -1391,7 +1709,7 @@ function LearnPage({segKey}){
                 initialResources={step.resources||[]}
                 segColor={seg.color}
               />
-              <KeyPlayersTracker stepTitle={step.title} segColor={seg.color}/>
+              <KeyPlayersTracker stepTitle={step.title} segColor={seg.color} initialPlayers={step.keyPlayers||[]}/>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid #F0F0F0",paddingTop:16,marginTop:16}}>
                 <button onClick={()=>setActiveStep(Math.max(0,activeStep-1))} disabled={activeStep===0} style={{padding:"9px 18px",border:"2px solid #DDD",borderRadius:9,background:"#fff",color:"#777",fontWeight:700,fontSize:12,cursor:"pointer",opacity:activeStep===0?0.4:1}}>← Previous</button>
                 <button onClick={()=>{toggleDone(activeStep);if(activeStep<steps.length-1)setActiveStep(activeStep+1);}} style={{padding:"10px 22px",background:completed.includes(activeStep)?"#059669":seg.color,color:"#fff",border:"none",borderRadius:9,fontWeight:800,fontSize:13,cursor:"pointer"}}>
@@ -2535,6 +2853,7 @@ function ForumPage({currentUser}){
     });
     const childrenOf=id=>activePost.replies.filter(r=>r.parent_reply_id===id);
     const Avatar=({role,size=28})=>(<div style={{width:size,height:size,borderRadius:"50%",background:ROLES[role]?.color||"#888",display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*0.5,flexShrink:0}}>{ROLES[role]?.icon||"👤"}</div>);
+    const canMarkBest=uid&&(myRole==="rsm"||myRole==="vp"||myRole==="admin");
 
     const ReplyBubble=({r,depth=0})=>{
       const isBest=activePost.best_answer_id===r.id;
