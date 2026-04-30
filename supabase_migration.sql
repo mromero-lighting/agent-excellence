@@ -64,7 +64,7 @@ create table if not exists scores (
 create table if not exists actions (
   id uuid primary key default gen_random_uuid(),
   agency_id uuid references agencies(id) on delete cascade,
-  window text check (window in ('last30','current','next30')) not null,
+  time_window text check (time_window in ('last30','current','next30')) not null,
   title text not null,
   segment text,
   owner text,

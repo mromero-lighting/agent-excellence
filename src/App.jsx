@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import { supabase } from "./supabaseClient";
+import { useAppData } from "./useAppData";
 
 const CL={orange:"#F26A36",navy:"#13294B",offwhite:"#F7F7F7"};
 const ROLES={
@@ -609,14 +611,7 @@ const KB_SEED=[
 
 const BLANK_CARD={title:"",type:"Guide",seg:"stock",category:"",content:"",author:"",tags:"",url:"",pinned:false};
 
-function KnowledgePage({currentUser}){
-  const [arts,setArts]=useState(KB_SEED);
-  const [dbLoaded,setDbLoaded]=useState(true);
-
-  // stub — in-memory only for test mode
-  const saveCardToDb=async()=>null;
-  const deleteCardFromDb=async()=>null;
-  const likeCardInDb=async()=>null;
+function KnowledgePage({currentUser,arts,setArts,onSave,onDelete,onLike,onPin}){
   const [segFilter,setSegFilter]=useState("all");
   const [catFilter,setCatFilter]=useState("all");
   const [typeFilter,setTypeFilter]=useState("all");
@@ -650,27 +645,25 @@ function KnowledgePage({currentUser}){
     const finalCat=form.category==="__new__"?customCat.trim():form.category;
     const parsed={seg:form.seg,category:finalCat,title:form.title,type:form.type,content:form.content,author_name:form.author,tags:form.tags.split(",").map(t=>t.trim()).filter(Boolean),url:form.url||"",pinned:false};
     if(editId){
-      await saveCardToDb({...parsed,id:editId},true);
+      await (onSave||Promise.resolve)({...parsed,id:editId},true);
       setArts(prev=>prev.map(a=>a.id===editId?{...a,...parsed}:a));
     }else{
-      const saved=await saveCardToDb({...parsed,likes:0});
-      setArts(prev=>[...(saved?[{...saved,tags:saved.tags||[]}]:[{...parsed,id:Date.now(),likes:0}]),...prev]);
+      const saved=await (onSave||Promise.resolve)({...parsed,likes:0});
+      if(saved)setArts(prev=>[{...saved,tags:saved.tags||[]},...prev]);
+      else setArts(prev=>[{...parsed,id:Date.now(),likes:0},...prev]);
     }
     closeForm();
   };
   const deleteCard=async(id)=>{
     if(!window.confirm("Delete this card?"))return;
-    await deleteCardFromDb(id);
+    await (onDelete||Promise.resolve)(id);
     setArts(prev=>prev.filter(a=>a.id!==id));
   };
   const togglePin=async(id)=>{
-    setArts(prev=>prev.map(a=>a.id===id?{...a,pinned:!a.pinned}:a));
+    await (onPin||Promise.resolve)(id);
   };
   const likeCard=async(id)=>{
-    const card=arts.find(a=>a.id===id);
-    const newLikes=(card.likes||0)+1;
-    await likeCardInDb(id,newLikes);
-    setArts(prev=>prev.map(a=>a.id===id?{...a,likes:newLikes}:a));
+    await (onLike||Promise.resolve)(id);
   };
 
   // Group by category within segment
@@ -2746,8 +2739,8 @@ const FORUM_SEED=[
     replies:[{id:401,author:"Michael Torres",authorRole:"vp",agency:"Cooper HQ",ts:"Jun 22 · 10:15 AM",votes:14,voters:{},replyTo:null,body:"Three things: (1) Come with a win/loss analysis from last quarter. (2) Bring your pipeline by segment with realistic close dates. (3) Have a specific ask for each segment."}]},
 ];
 
-function ForumPage({currentUser}){
-  const [posts,setPosts]=useState([]);
+function ForumPage({currentUser,posts,setPosts,votedMap,setVotedMap,onSavePost,onSaveReply,onToggleVote,onMarkBest,onIncrementViews,onVoteSameQuestion}){
+  // All forum state comes from parent via props (persisted in Supabase)
   const [view,setView]=useState("list");
   const [activePostId,setActivePostId]=useState(null);
   const [segFilter,setSegFilter]=useState("all");
@@ -2758,8 +2751,7 @@ function ForumPage({currentUser}){
   const [newAnswer,setNewAnswer]=useState("");
   const [replyingTo,setReplyingTo]=useState(null);
   const [replyText,setReplyText]=useState("");
-  const [votedMap,setVotedMap]=useState({});
-  const [loadingPosts,setLoadingPosts]=useState(true);
+  const [loadingPosts]=useState(false);
 
   const uid=currentUser?.id||null;
   const me=currentUser?.name||"Guest";
@@ -2768,17 +2760,9 @@ function ForumPage({currentUser}){
 
   const showToast=msg=>{setToastMsg(msg);setTimeout(()=>setToastMsg(""),3500);};
 
-  // Load posts — in-memory for test mode
-  const loadPosts=useCallback(async()=>{
-    setPosts(FORUM_SEED.map(p=>({...p,replies:p.replies||[]})));
-    setLoadingPosts(false);
-  },[uid]);
-
-  useEffect(()=>{loadPosts();},[loadPosts]);
-
-
   const openPost=async(id)=>{
-    setPosts(prev=>prev.map(p=>p.id===id?{...p,views:(p.views||0)+1}:p));
+    if(onIncrementViews)onIncrementViews(id);
+    else setPosts(prev=>prev.map(p=>p.id===id?{...p,views:(p.views||0)+1}:p));
     setActivePostId(id);setView("post");setNewAnswer("");setReplyingTo(null);setReplyText("");
   };
   const goBack=()=>{setView("list");setActivePostId(null);};
@@ -2786,54 +2770,57 @@ function ForumPage({currentUser}){
   const submitPost=async()=>{
     if(!form.title.trim()||!form.body.trim())return;
     const tags=form.tags.split(",").map(t=>t.trim()).filter(Boolean);
-    const p={id:Date.now(),seg:form.seg,title:form.title,body:form.body,
+    const p={seg:form.seg,title:form.title,body:form.body,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      tags,pinned:false,views:0,best_answer_id:null,
-      created_at:new Date().toISOString(),replies:[]};
-    setPosts(prev=>[p,...prev]);
+      tags,pinned:false,views:0,best_answer_id:null};
+    if(onSavePost){await onSavePost(p);}
+    else{setPosts(prev=>[{...p,id:Date.now(),replies:[],created_at:new Date().toISOString()},...prev]);}
     setForm({title:"",body:"",seg:"general",tags:""});setShowForm(false);
     showToast("✓ Question posted!");
   };
 
   const submitAnswer=async()=>{
     if(!newAnswer.trim())return;
-    const r={id:Date.now(),post_id:activePostId,parent_reply_id:null,
+    const r={post_id:activePostId,parent_reply_id:null,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      body:newAnswer.trim(),votes:0,created_at:new Date().toISOString()};
-    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,r]}:p));
+      body:newAnswer.trim(),votes:0};
+    if(onSaveReply){await onSaveReply(r);}
+    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,{...r,id:Date.now(),created_at:new Date().toISOString()}]}:p));}
     setNewAnswer("");showToast("✓ Answer posted!");
   };
 
   const submitReply=async(parentId)=>{
     if(!replyText.trim())return;
-    const r={id:Date.now(),post_id:activePostId,parent_reply_id:parentId,
+    const r={post_id:activePostId,parent_reply_id:parentId,
       author_id:uid,author_name:me,author_role:myRole,author_agency:myAgency,
-      body:replyText.trim(),votes:0,created_at:new Date().toISOString()};
-    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,r]}:p));
+      body:replyText.trim(),votes:0};
+    if(onSaveReply){await onSaveReply(r);}
+    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,replies:[...p.replies,{...r,id:Date.now(),created_at:new Date().toISOString()}]}:p));}
     setReplyText("");setReplyingTo(null);showToast("✓ Reply posted!");
   };
 
   const castVote=async(replyId)=>{
-    const already=votedMap[replyId];
-    setVotedMap(prev=>({...prev,[replyId]:!already}));
-    setPosts(prev=>prev.map(p=>({...p,replies:p.replies.map(r=>r.id===replyId?{...r,votes:r.votes+(already?-1:1)}:r)})));
+    if(onToggleVote){await onToggleVote(replyId,activePostId);}
+    else{
+      const already=votedMap[replyId];
+      setVotedMap(prev=>({...prev,[replyId]:!already}));
+      setPosts(prev=>prev.map(p=>({...p,replies:p.replies.map(r=>r.id===replyId?{...r,votes:r.votes+(already?-1:1)}:r)})));
+    }
   };
 
   const markBest=async(replyId)=>{
-    setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,best_answer_id:p.best_answer_id===replyId?null:replyId}:p));
+    if(onMarkBest){await onMarkBest(activePostId,replyId);}
+    else{setPosts(prev=>prev.map(p=>p.id===activePostId?{...p,best_answer_id:p.best_answer_id===replyId?null:replyId}:p));}
   };
 
   const voteSameQuestion=(postId)=>{
     if(!uid)return;
-    setPosts(prev=>prev.map(p=>{
+    if(onVoteSameQuestion){onVoteSameQuestion(postId);}
+    else{setPosts(prev=>prev.map(p=>{
       if(p.id!==postId)return p;
-      const users=p.sameQuestionUsers||[];
-      const already=users.includes(uid);
-      return{...p,
-        sameQuestionUsers:already?users.filter(u=>u!==uid):[...users,uid],
-        sameQuestion:(p.sameQuestion||0)+(already?-1:1),
-      };
-    }));
+      const users=p.sameQuestionUsers||[];const already=users.includes(uid);
+      return{...p,sameQuestionUsers:already?users.filter(u=>u!==uid):[...users,uid],sameQuestion:(p.sameQuestion||0)+(already?-1:1)};
+    }));}
   };
 
   const filtered=[...posts]
@@ -3333,11 +3320,17 @@ const PAGES_WITH_AGENCY_BAR=new Set(["dashboard","sc_stock","sc_spec","sc_indust
 export default function App(){
   const [user,setUser]=useState(null);
   const [page,setPage]=useState("dashboard");
-  const [scores,setScores]=useState(seedScores);
-  const [locks,setLocks]=useState({});
-  const [snapshots,setSnapshots]=useState({}); // { "April": { "Illumination Systems": {...scores} } }
-  const [evalHistory,setEvalHistory]=useState([]); // [{agency,month,year,timestamp,lockedBy,segScores,overall,prevSegScores,prevOverall}]
-  const [annualActions,setAnnualActions]=useState(ANNUAL_ACTIONS);
+  const {
+    scores, setScores, scoresLoaded,
+    locks, setLocks,
+    snapshots, setSnapshots, evalHistory, setEvalHistory, onLock: onLockFromHook,
+    annualActions, setAnnualActions,
+    knowledgeCards, setKnowledgeCards, knowledgeLoaded,
+    saveKnowledgeCard, deleteKnowledgeCard, likeKnowledgeCard, pinKnowledgeCard,
+    forumPosts, setForumPosts, forumLoaded, votedMap, setVotedMap,
+    saveForumPost, saveForumReply, toggleForumVote, markBestAnswer,
+    incrementPostViews, voteSameQuestion: voteSameQuestionDb,
+  } = useAppData({ user, seedScores: seedScores(), ANNUAL_ACTIONS, KB_SEED, FORUM_SEED });
   const [openGroups,setOpenGroups]=useState({scorecard:true,actions_grp:false,training:false});
   const [selAgency,setSelAgency]=useState(AGENCIES[0]);
   const [profileAgency,setProfileAgency]=useState(null); // null = not viewing profile
@@ -3362,16 +3355,14 @@ export default function App(){
 
   const setScoresWithPersist=setScores;
 
-  // Called when RSM/Admin locks an evaluation — captures snapshot + history entry
+  // onLock: wraps hook version, also updates local snapshots with full agency data
   const onLock=(agency,currentScores)=>{
     const now=new Date();
     const month=MONTHS[now.getMonth()];
     const year=now.getFullYear();
     const ts=now.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})+" · "+now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
-    // Full snapshot of ALL agencies at lock time
     const agSnap={};
     AGENCIES.forEach(a=>{agSnap[a]={};SEG.forEach(seg=>{seg.criteria.forEach(c=>{agSnap[a][seg.key+"_"+c.key]=currentScores[a]?.[seg.key+"_"+c.key]??0;});});});
-    // Compute segment % for history badge
     const calcSeg=(ag,sk)=>{const s=SEG.find(x=>x.key===sk);let t=0,mx=0;s.criteria.forEach(c=>{const v=currentScores[ag]?.[sk+"_"+c.key]??0;if(v>0)t+=v;mx+=4;});return mx>0?Math.round(t/mx*100):0;};
     const calcOv=(ag)=>{let t=0,mx=0;SEG.forEach(s=>{s.criteria.forEach(c=>{const v=currentScores[ag]?.[s.key+"_"+c.key]??0;if(v>0)t+=v;mx+=4;});});return mx>0?Math.round(t/mx*100):0;};
     const segScores={};SEG.forEach(s=>{segScores[s.key]=calcSeg(agency,s.key);});
@@ -3379,7 +3370,10 @@ export default function App(){
     setSnapshots(prev=>({...prev,[month]:{...(prev[month]||{}),...agSnap}}));
     setEvalHistory(prev=>{
       const prevEntry=[...prev].reverse().find(e=>e.agency===agency);
-      return[...prev,{agency,month,year,timestamp:ts,lockedBy:user?.name||"Unknown",segScores,overall,prevSegScores:prevEntry?.segScores??null,prevOverall:prevEntry?.overall??null}];
+      const entry={agency,month,year,timestamp:ts,lockedBy:user?.name||"Unknown",segScores,overall,prevSegScores:prevEntry?.segScores??null,prevOverall:prevEntry?.overall??null};
+      // Persist to Supabase via hook
+      if(onLockFromHook)onLockFromHook(agency,currentScores);
+      return[...prev,entry];
     });
   };
 
@@ -3402,8 +3396,8 @@ export default function App(){
     if(page==="learn_connected")  return <LearnPage segKey="connected"/>;
     if(page==="progress")         return <ProgressPage scores={scores} selAgency={effectiveAgency} snapshots={snapshots} evalHistory={evalHistory}/>;
     if(page==="actions_main")     return <ActionsPage currentUser={user} selAgency={effectiveAgency} annualActions={annualActions} setAnnualActions={setAnnualActions}/>;
-    if(page==="knowledge")        return <KnowledgePage currentUser={user}/>;
-    if(page==="forum")            return <ForumPage currentUser={user}/>;
+    if(page==="knowledge")        return <KnowledgePage currentUser={user} arts={knowledgeCards} setArts={setKnowledgeCards} onSave={saveKnowledgeCard} onDelete={deleteKnowledgeCard} onLike={likeKnowledgeCard} onPin={pinKnowledgeCard}/>;
+    if(page==="forum")            return <ForumPage currentUser={user} posts={forumPosts} setPosts={setForumPosts} votedMap={votedMap} setVotedMap={setVotedMap} onSavePost={saveForumPost} onSaveReply={saveForumReply} onToggleVote={toggleForumVote} onMarkBest={markBestAnswer} onIncrementViews={incrementPostViews} onVoteSameQuestion={voteSameQuestionDb}/>;
     return <Dashboard scores={scores} selAgency={effectiveAgency}/>;
   };
 
