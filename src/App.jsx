@@ -3367,14 +3367,16 @@ export default function App(){
     const calcOv=(ag)=>{let t=0,mx=0;SEG.forEach(s=>{s.criteria.forEach(c=>{const v=currentScores[ag]?.[s.key+"_"+c.key]??0;if(v>0)t+=v;mx+=4;});});return mx>0?Math.round(t/mx*100):0;};
     const segScores={};SEG.forEach(s=>{segScores[s.key]=calcSeg(agency,s.key);});
     const overall=calcOv(agency);
-    setSnapshots(prev=>({...prev,[month]:{...(prev[month]||{}),...agSnap}}));
+    // Build entry first
     setEvalHistory(prev=>{
       const prevEntry=[...prev].reverse().find(e=>e.agency===agency);
       const entry={agency,month,year,timestamp:ts,lockedBy:user?.name||"Unknown",segScores,overall,prevSegScores:prevEntry?.segScores??null,prevOverall:prevEntry?.overall??null};
-      // Persist to Supabase via hook
-      if(onLockFromHook)onLockFromHook(agency,currentScores);
       return[...prev,entry];
     });
+    // Update snapshots
+    setSnapshots(prev=>({...prev,[month]:{...(prev[month]||{}),...agSnap}}));
+    // Fire Supabase persistence outside any state updater
+    if(onLockFromHook)setTimeout(()=>onLockFromHook(agency,currentScores),0);
   };
 
   const isChildActive=group=>group.children?.some(c=>c.id===page);
