@@ -61,29 +61,33 @@ export function useAppData({ user, seedScores, ANNUAL_ACTIONS, KB_SEED, FORUM_SE
     } catch { setScoresLoaded(true) }
   }
 
-  const setScores = useCallback(async (updater) => {
-    setScoresLocal(prev => {
-      const next = typeof updater === 'function' ? updater(prev) : updater
-      // Persist changed rows
-      Object.keys(next).forEach(agency => {
-        Object.keys(next[agency] || {}).forEach(key => {
-          const [seg, ...rest] = key.split('_')
-          const crit = rest.join('_')
-          const val = next[agency][key]
-          if (val !== prev[agency]?.[key]) {
-            supabase.rpc('upsert_score', {
-              p_agency_name: agency,
-              p_segment: seg,
-              p_criterion_key: crit,
-              p_score: val,
-              p_evaluated_by: uid,
-            }).catch(console.error)
-          }
-        })
+  const persistScoreChanges = useCallback((prev, next) => {
+    Object.keys(next).forEach(agency => {
+      Object.keys(next[agency] || {}).forEach(key => {
+        const [seg, ...rest] = key.split('_')
+        const crit = rest.join('_')
+        const val = next[agency][key]
+        if (val !== prev[agency]?.[key]) {
+          supabase.rpc('upsert_score', {
+            p_agency_name: agency,
+            p_segment: seg,
+            p_criterion_key: crit,
+            p_score: val,
+            p_evaluated_by: uid,
+          }).catch(console.error)
+        }
       })
-      return next
     })
   }, [uid])
+
+  const setScores = useCallback((updater) => {
+    setScoresLocal(prev => {
+      const next = typeof updater === 'function' ? updater(prev) : updater
+      // Fire persistence as non-blocking side effect
+      setTimeout(() => persistScoreChanges(prev, next), 0)
+      return next
+    })
+  }, [persistScoreChanges])
 
   // ── LOCKS ──────────────────────────────────────────────────────────────
   const loadLocks = async () => {
@@ -96,18 +100,18 @@ export function useAppData({ user, seedScores, ANNUAL_ACTIONS, KB_SEED, FORUM_SE
     } catch {}
   }
 
-  const setLocks = useCallback(async (updater) => {
+  const setLocks = useCallback((updater) => {
     setLocksLocal(prev => {
       const next = typeof updater === 'function' ? updater(prev) : updater
-      // Persist changed locks
+      // Persist changes async
       Object.keys(next).forEach(agency => {
         if (next[agency] !== prev[agency]) {
           supabase.from('eval_locks').upsert({
             agency_name: agency,
             is_locked: next[agency],
             locked_by: userName,
-            locked_at: next[agency] ? nowISO() : null,
-            updated_at: nowISO(),
+            locked_at: next[agency] ? new Date().toISOString() : null,
+            updated_at: new Date().toISOString(),
           }, { onConflict: 'agency_name' }).catch(console.error)
         }
       })
@@ -215,10 +219,10 @@ export function useAppData({ user, seedScores, ANNUAL_ACTIONS, KB_SEED, FORUM_SE
     } catch {}
   }
 
-  const setAnnualActions = useCallback(async (updater) => {
+  const setAnnualActions = useCallback((updater) => {
     setAnnualActionsLocal(prev => {
       const next = typeof updater === 'function' ? updater(prev) : updater
-      // Find changed actions and persist
+      // Persist changed weeks async
       next.forEach((action, i) => {
         const prevAction = prev[i]
         if (JSON.stringify(action.weeks) !== JSON.stringify(prevAction?.weeks)) {
@@ -226,7 +230,7 @@ export function useAppData({ user, seedScores, ANNUAL_ACTIONS, KB_SEED, FORUM_SE
             action_number: action.id,
             agency_name: 'shared',
             week_data: action.weeks,
-            updated_at: nowISO(),
+            updated_at: new Date().toISOString(),
           }, { onConflict: 'action_number,agency_name' }).catch(console.error)
         }
       })
